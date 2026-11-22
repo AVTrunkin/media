@@ -1,14 +1,13 @@
 export function parseCoords(input) {
   let str = String(input).trim();
 
-
   const mathMinus = String.fromCharCode(0x2212);
   str = str.split(mathMinus).join('-');
 
   const hasOpen = str.startsWith('[');
   const hasClose = str.endsWith(']');
   if (hasOpen !== hasClose) {
-    throw new Error('Invalid coordinates format');
+    throw new Error('Неверный формат координат');
   }
   if (hasOpen) {
     str = str.slice(1, -1).trim();
@@ -19,7 +18,7 @@ export function parseCoords(input) {
   const match = str.match(re);
 
   if (!match) {
-    throw new Error('Invalid coordinates format');
+    throw new Error('Неверный формат координат');
   }
 
   return {
@@ -27,3 +26,5 @@ export function parseCoords(input) {
     longitude: parseFloat(match[2]),
   };
 }
+
+export default parseCoords;
