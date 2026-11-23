@@ -252,6 +252,7 @@ function hidePreview() {
 
 function handleRecordingStop(finishedRecorder) {
   hidePreview();
+  finishedRecorder.stream.getTracks().forEach((t) => t.stop());
   if (!pendingSave) {
     return;
   }
@@ -259,7 +260,10 @@ function handleRecordingStop(finishedRecorder) {
   const url = URL.createObjectURL(blob);
   const type = finishedRecorder.stream.getVideoTracks().length > 0 ? 'video' : 'audio';
   resolveCoords().then((coords) => {
-    if (!coords) return;
+    if (!coords) {
+      URL.revokeObjectURL(url);
+      return;
+    }
     addPost({ type, data: url, coords, createdAt: Date.now() });
   });
 }
